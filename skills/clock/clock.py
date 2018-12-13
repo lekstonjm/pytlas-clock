@@ -19,6 +19,8 @@ def en_data(): return """
   what time is it?
   What's the time?
   Could you give me the time?
+  Give me time.
+  Time please.
   what time is it in @[location]?
   What's the time in @[location]?
 """ + locations
@@ -28,10 +30,10 @@ def fr_data(): return """
 %[get_clock]
   Quelle heure est-il?
   Peux-tu me donner l'heure?
-  donne moi l'heure?
+  Donne moi l'heure.
   Quelle heure est-il à @[location]?
   Peux-tu me donner l'heure qu'il est à @[location]?
-  donne moi l'heure qu'il est à @[location]?
+  Donne moi l'heure qu'il est à @[location]?
 """ + locations
 
 @translations('fr')
@@ -44,6 +46,6 @@ def on_clock(req):
   city = req.intent.slot('location').first().value
   if not city:
     city = "local"
-  current_time = time.now()
-  req.agent.answer(req._('It\'s %s') % current_time.strftime('%c'))
+  current_time = datetime.now().time()
+  req.agent.answer(req._('It\'s %s') % current_time.strftime("%X"))
   return req.agent.done()
