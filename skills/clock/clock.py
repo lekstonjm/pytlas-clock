@@ -38,7 +38,8 @@ def fr_data(): return """
 
 @translations('fr')
 def fr_translations(): return {
-  'It\'s %s': 'Il est %s'
+  'It\'s %s': 'Il est %s',
+  '%I:%M %p':'%H:%M'
 }
 
 @intent('get_clock')
@@ -47,5 +48,5 @@ def on_clock(req):
   if not city:
     city = "local"
   current_time = datetime.now().time()
-  req.agent.answer(req._('It\'s %s') % current_time.strftime("%X"))
+  req.agent.answer(req._('It\'s %s') % current_time.strftime(req._('%I:%M %p')))
   return req.agent.done()
