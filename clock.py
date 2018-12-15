@@ -1,5 +1,8 @@
 from pytlas import intent, training, translations
 from datetime import datetime
+import geocoder
+from timezonefinderL import TimezoneFinder
+from pytz import timezone
 # This entity will be shared among training data since it's not language specific
 locations = """
 @[location]
@@ -38,15 +41,43 @@ def fr_data(): return """
 
 @translations('fr')
 def fr_translations(): return {
-  'It\'s %s': 'Il est %s',
-  '%I:%M %p':'%H:%M'
+#  '%I:%M %p':'%H:%M',
+  'It\'s {}': 'Il est {}',
+  'It\'s {0} in {1}': 'A {1}, il est actuellement {0}',
+  'Hummm! It seems {0} doesn\'t exists as city name': 'Hmmmm! Il semble que {0} ne soit pas le nom d\'une ville',
+  'Hummm! I encountered an error during {0} information gathering': 'Hmmmm! J\'ai des difficultés pour récuperer les données concernant {0}',
+  'Hummm! I can\'t retrieve time zone information of {0}':'Hmmmm! Je ne parviens pas à récuperer les données de fuseau horaire pour {0}'
 }
 
 @intent('get_clock')
 def on_clock(req):
   city = req.intent.slot('location').first().value
   if not city:
-    city = "local"
-  current_time = datetime.now().time()
-  req.agent.answer(req._('It\'s %s') % current_time.strftime(req._('%I:%M %p')))
+    current_time = datetime.now().time()
+    #resp = req._('It\'s {}').format(current_time.strftime(req._('%I:%M %p')))
+    resp = req._('It\'s {}').format(req._d(current_time, time_only=True))
+    req.agent.answer(resp)
+    return req.agent.done()
+  else:
+    try:
+      g = geocoder.osm(city)
+      if not g:
+        resp = req._('Hummm! It seems {0} doesn\'t exists as city name').format(city)
+        req.agent.answer(resp)
+        return req.agent.done()
+    except:
+        resp = req._('Hummm! I encountered an error during the city information gathering')
+        req.agent.answer(resp)
+        return req.agent.done()
+    tf = TimezoneFinder()
+    tzStr = tf.timezone_at(lng=g.lng, lat=g.lat)
+    if tzStr == '':
+        resp = req._('Hummm! I can\'t retrieve time zone information of {0}').format(city)
+        req.agent.answer(resp)
+        return req.agent.done()
+    tzObj = timezone(tzStr)
+    current_time = datetime.now(tzObj)
+    #resp = req._('It\'s {0} in {1}').format(current_time.strftime(req._('%I:%M %p'), city)
+    resp = req._('It\'s {0} in {1}').format(req._d(current_time, time_only=True), city)
+  req.agent.answer(resp)
   return req.agent.done()
