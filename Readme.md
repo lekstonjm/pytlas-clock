@@ -1,4 +1,4 @@
-Clock skill for Pytlas
+clock skill for pytlas
 ======================
 The clock skill that gives you time.
 
