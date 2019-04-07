@@ -1,9 +1,9 @@
 clock skill for pytlas ![License]( https://img.shields.io/badge/License-GPL%20v3-blue.svg)
 ===============================
 
-The clock skill that gives you time.
+The  skill that gives you time and who helps you to make your boiled eggs a success every time.
 
-A skill powered by the open, non intrusive and super easy  pytlas assistant framework 
+Powered by the open, non intrusive and super easy pytlas assistant framework 
 
 see for details: https://github.com/atlassistant/pytlas
 
@@ -16,4 +16,4 @@ Typical sentences
 -----------------
 - time please
 - what's time in new york
-- how does the clock skill work
+- Start a timer for 10 seconds
