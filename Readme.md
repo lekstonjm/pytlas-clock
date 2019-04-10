@@ -3,9 +3,7 @@ clock skill for pytlas ![License]( https://img.shields.io/badge/License-GPL%20v3
 
 The  skill that gives you time and helps you to make your boiled eggs a success.
 
-Powered by the open, non intrusive and super easy pytlas assistant framework 
-
-see for details: https://github.com/atlassistant/pytlas
+Powered by the open, non intrusive and super easy [pytlas assistant framework](https://github.com/atlassistant/pytlas) 
 
 Supported languages
 -------------------
