@@ -12,4 +12,4 @@ class TestClock:
     current_time = datetime.now().time()
     current_formated_time = format_time(current_time, locale= 'en')
     call = agent.model.on_answer.get_call()
-    expect(call.text).to.equal('{0}'.format(current_formated_time))
+    expect(call.text).to.equal('It\'s {}'.format(current_formated_time))
